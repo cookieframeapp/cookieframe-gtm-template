@@ -289,7 +289,6 @@ const copyFromDataLayer = require('copyFromDataLayer');
 const makeNumber = require('makeNumber');
 const makeString = require('makeString');
 const getType = require('getType');
-const Object = require('Object');
 
 // Configuration
 const domainId = data.domainId;
@@ -439,11 +438,16 @@ function checkAndApplyStoredConsent() {
  */
 function setupConsentListener() {
   // Listen for CookieFrame dataLayer events
-  addEventCallback('cookieframe_consent_update', function(containerId, eventData) {
-    const cfConsent = copyFromDataLayer('cookieframeConsent');
-    if (cfConsent) {
-      const googleConsent = convertToGoogleConsent(cfConsent);
-      applyConsentUpdate(googleConsent);
+  // addEventCallback is called after each GTM event finishes processing
+  addEventCallback(function(containerId, eventData) {
+    // Check if this is a CookieFrame consent update event
+    const eventName = copyFromDataLayer('event');
+    if (eventName === 'cookieframe_consent_update') {
+      const cfConsent = copyFromDataLayer('cookieframeConsent');
+      if (cfConsent) {
+        const googleConsent = convertToGoogleConsent(cfConsent);
+        applyConsentUpdate(googleConsent);
+      }
     }
   });
 
