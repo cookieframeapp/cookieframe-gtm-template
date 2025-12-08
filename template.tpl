@@ -1,3 +1,11 @@
+﻿___TERMS_OF_SERVICE___
+
+By creating or modifying this file you agree to Google Tag Manager's Community
+Template Gallery Developer Terms of Service available at
+https://developers.google.com/tag-manager/gallery-tos (or such other URL as
+Google may provide), as modified from time to time.
+
+
 ___INFO___
 
 {
@@ -8,12 +16,16 @@ ___INFO___
   "displayName": "CookieFrame Consent Management Platform",
   "brand": {
     "id": "brand_cookieframe",
-    "displayName": "CookieFrame",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0ElEQVR4nO2XO0sDQRDHf6eVhY2NjY2FhY2FhYWFhYWFhYWFhYWFhYWFhYU+sLGwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLDQ5sYdmA27e7kYk4j/4mBvd2Z2/jM7ezuQoIaYBVaBZWAemAJGgT6ghKoBH4FH4Bq4AC6BF+AnAYAJYBHIAUNAT5V+RUAB+AJuJZAz4Al4qwGA0YANYBjorlHP30AfcA+cSQDNwAywAnT+g0AYvQbOgd9qAUwDS8BA4Os/RSvQDJwAx5UCmALmgJ7A10+iHVgHXoG3UgBzwCjQFnh6LdoKfEgCB0UBlpEE1gJPPyYGgHXgDfgqCrACdGVBWR9YlwS+iwLMASNZkPfUYF4SOCsKMAssZEHeU4MFSeC6KMA0MJMFeU8NFiSBm6IAsQKklURH4OnnpF8SuCsKECtAWkl0BZ5+TgYkgYeiALECpJVEd+Dp52RIEngqChArQFpJ9ASefjyNAVvAYRZkGNgGcqWU1OAOOA0cJCmAQ+AkC3ICHAEnWZBT4DgLcgYcZ0FOgKMsyClwkAU5AwqAhyxIAXCfBbkE7rMgl8B1FuQauMiCXAGXWZBr4CILcg1cZEFugKssyC1wXhTgF8eNI0D2oD8WAAAAAElFTkSuQmCC"
+    "displayName": "CookieFrame"
   },
   "description": "Integrates CookieFrame consent management with Google Consent Mode v2. Sets default consent states and updates them based on user preferences.",
-  "categories": ["TAG_MANAGEMENT", "UTILITY"],
-  "containerContexts": ["WEB"],
+  "categories": [
+    "TAG_MANAGEMENT",
+    "UTILITY"
+  ],
+  "containerContexts": [
+    "WEB"
+  ],
   "termsOfServiceUrl": "https://cookieframe.com/terms"
 }
 
@@ -38,7 +50,9 @@ ___TEMPLATE_PARAMETERS___
           },
           {
             "type": "REGEX",
-            "args": ["^[A-Za-z0-9]{8}$"]
+            "args": [
+              "^[A-Za-z0-9]{8}$"
+            ]
           }
         ],
         "help": "Your 8-character CookieFrame Domain ID. Find this in your CookieFrame dashboard under Domain Settings."
@@ -49,7 +63,7 @@ ___TEMPLATE_PARAMETERS___
         "checkboxText": "Inject CookieFrame widget script",
         "simpleValueType": true,
         "defaultValue": true,
-        "help": "Enable this to load the CookieFrame widget via this tag. Disable if you're loading the widget script directly in your HTML."
+        "help": "Enable this to load the CookieFrame widget via this tag. Disable if you\u0027re loading the widget script directly in your HTML."
       },
       {
         "type": "TEXT",
@@ -85,8 +99,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "ad_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied (recommended)" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied (recommended)"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied",
@@ -98,8 +118,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "ad_user_data",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied (recommended)" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied (recommended)"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied",
@@ -111,8 +137,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "ad_personalization",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied (recommended)" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied (recommended)"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied",
@@ -124,8 +156,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "analytics_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied (recommended)" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied (recommended)"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied",
@@ -137,8 +175,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "functionality_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted (recommended)" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted (recommended)"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied",
@@ -150,8 +194,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "personalization_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied",
@@ -163,8 +213,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "security_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "granted", "displayValue": "Granted (recommended)" },
-          { "value": "denied", "displayValue": "Denied" }
+          {
+            "value": "granted",
+            "displayValue": "Granted (recommended)"
+          },
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "granted",
@@ -181,7 +237,7 @@ ___TEMPLATE_PARAMETERS___
       {
         "type": "LABEL",
         "name": "regionalLabel",
-        "displayName": "Override default consent for specific regions. Use ISO 3166-2 codes (e.g., 'US', 'US-CA', 'DE', 'FR')."
+        "displayName": "Override default consent for specific regions. Use ISO 3166-2 codes (e.g., \u0027US\u0027, \u0027US-CA\u0027, \u0027DE\u0027, \u0027FR\u0027)."
       },
       {
         "type": "SIMPLE_TABLE",
@@ -201,8 +257,14 @@ ___TEMPLATE_PARAMETERS___
             "name": "adStorage",
             "type": "SELECT",
             "selectItems": [
-              { "value": "denied", "displayValue": "denied" },
-              { "value": "granted", "displayValue": "granted" }
+              {
+                "value": "denied",
+                "displayValue": "denied"
+              },
+              {
+                "value": "granted",
+                "displayValue": "granted"
+              }
             ]
           },
           {
@@ -211,8 +273,14 @@ ___TEMPLATE_PARAMETERS___
             "name": "analyticsStorage",
             "type": "SELECT",
             "selectItems": [
-              { "value": "denied", "displayValue": "denied" },
-              { "value": "granted", "displayValue": "granted" }
+              {
+                "value": "denied",
+                "displayValue": "denied"
+              },
+              {
+                "value": "granted",
+                "displayValue": "granted"
+              }
             ]
           }
         ],
@@ -554,8 +622,7 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "access_consent",
-        "vpiId": "1"
+        "publicId": "access_consent"
       },
       "param": [
         {
@@ -793,8 +860,7 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "logging",
-        "vpiId": "1"
+        "publicId": "logging"
       },
       "param": [
         {
@@ -814,8 +880,7 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "inject_script",
-        "vpiId": "1"
+        "publicId": "inject_script"
       },
       "param": [
         {
@@ -844,8 +909,7 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "access_globals",
-        "vpiId": "1"
+        "publicId": "access_globals"
       },
       "param": [
         {
@@ -1061,8 +1125,7 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "access_local_storage",
-        "vpiId": "1"
+        "publicId": "access_local_storage"
       },
       "param": [
         {
@@ -1114,8 +1177,7 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "read_data_layer",
-        "vpiId": "1"
+        "publicId": "read_data_layer"
       },
       "param": [
         {
@@ -1155,8 +1217,7 @@ ___WEB_PERMISSIONS___
   {
     "instance": {
       "key": {
-        "publicId": "write_data_layer",
-        "vpiId": "1"
+        "publicId": "write_data_layer"
       },
       "param": [
         {
@@ -1183,6 +1244,16 @@ ___WEB_PERMISSIONS___
     },
     "clientAnnotations": {
       "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "read_event_metadata",
+        "versionId": "1"
+      },
+      "param": []
     },
     "isRequired": true
   }
@@ -1214,7 +1285,6 @@ scenarios:
 
     assertApi('setDefaultConsentState').wasCalled();
     assertApi('gtmOnSuccess').wasCalled();
-
 - name: Injects script when enabled
   code: |-
     const mockData = {
@@ -1234,7 +1304,6 @@ scenarios:
     runCode(mockData);
 
     assertApi('injectScript').wasCalled();
-
 - name: Reads stored consent from localStorage
   code: |-
     mock('localStorage', {
@@ -1287,3 +1356,5 @@ Consent Type Mapping:
 
 For support: https://cookieframe.com/help
 Documentation: https://cookieframe.com/docs/integrations/google-tag-manager
+
+
