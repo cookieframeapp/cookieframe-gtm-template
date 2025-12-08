@@ -2,7 +2,7 @@ homepage: https://cookieframe.com
 documentation: https://cookieframe.com/docs/integrations/google-tag-manager
 
 versions:
-  - sha: 83f4f07024c2e2f5bebf924a01c16e1916866671
+  - sha: 76a11ce6583c9e8eaa7a5f2082ef34b0638fc662
     changeNotes: |
       Initial release
       - Google Consent Mode v2 support with all 7 consent types
