@@ -13,7 +13,8 @@ ___INFO___
   },
   "description": "Integrates CookieFrame consent management with Google Consent Mode v2. Sets default consent states and updates them based on user preferences.",
   "categories": ["TAG_MANAGEMENT", "UTILITY"],
-  "containerContexts": ["WEB"]
+  "containerContexts": ["WEB"],
+  "termsOfServiceUrl": "https://cookieframe.com/terms"
 }
 
 
