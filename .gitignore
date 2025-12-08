@@ -1,0 +1,14 @@
+# AI context files (local only)
+CLAUDE.md
+.claude/
+.cursor/
+.aider*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
