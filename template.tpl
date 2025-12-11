@@ -79,6 +79,21 @@ ___TEMPLATE_PARAMETERS___
             "type": "EQUALS"
           }
         ]
+      },
+      {
+        "type": "CHECKBOX",
+        "name": "injectInHead",
+        "checkboxText": "Inject script in \u003chead\u003e (recommended)",
+        "simpleValueType": true,
+        "defaultValue": true,
+        "help": "Inject the script in the \u003chead\u003e section for faster loading. Recommended for consent management scripts.",
+        "enablingConditions": [
+          {
+            "paramName": "injectScript",
+            "paramValue": true,
+            "type": "EQUALS"
+          }
+        ]
       }
     ]
   },
@@ -357,10 +372,12 @@ const copyFromDataLayer = require('copyFromDataLayer');
 const makeNumber = require('makeNumber');
 const makeString = require('makeString');
 const getType = require('getType');
+const createQueue = require('createQueue');
 
 // Configuration
 const domainId = data.domainId;
 const injectScriptEnabled = data.injectScript;
+const injectInHead = data.injectInHead !== false; // Default to true
 const scriptUrl = data.scriptUrl || 'https://cookieframe.com/api/widget/' + domainId + '/script.js';
 const waitForUpdate = makeNumber(data.waitForUpdate) || 500;
 const enableDebug = data.enableDebug;
@@ -591,10 +608,48 @@ function initializeConsent() {
 }
 
 /**
- * Inject CookieFrame widget script
+ * Inject CookieFrame widget script into <head> for early loading
+ */
+function injectScriptInHead() {
+  debugLog('Injecting CookieFrame script in <head>:', scriptUrl);
+
+  // Create a queue function that will run in the window context
+  // This allows us to inject into head before other scripts run
+  setInWindow('__cookieframe_inject', function(url) {
+    var script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+    script.setAttribute('data-cookieframe', 'widget');
+
+    // Insert at the beginning of head for earliest execution
+    var head = document.head || document.getElementsByTagName('head')[0];
+    if (head.firstChild) {
+      head.insertBefore(script, head.firstChild);
+    } else {
+      head.appendChild(script);
+    }
+  }, true);
+
+  // Call the injector function
+  callInWindow('__cookieframe_inject', scriptUrl);
+
+  debugLog('CookieFrame script injected in <head>');
+
+  // Re-check for consent after a short delay
+  // (script will load asynchronously)
+  checkAndApplyStoredConsent();
+}
+
+/**
+ * Inject CookieFrame widget script (standard method - injects at end of body)
  */
 function injectCookieFrameScript() {
-  debugLog('Injecting CookieFrame script:', scriptUrl);
+  if (injectInHead) {
+    injectScriptInHead();
+    return;
+  }
+
+  debugLog('Injecting CookieFrame script (standard):', scriptUrl);
 
   injectScript(scriptUrl, function() {
     debugLog('CookieFrame script loaded successfully');
@@ -1070,6 +1125,45 @@ ___WEB_PERMISSIONS___
                   {
                     "type": 8,
                     "boolean": false
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "__cookieframe_inject"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
                   }
                 ]
               },
