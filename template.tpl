@@ -363,7 +363,9 @@ const domainId = data.domainId;
 const injectScriptEnabled = data.injectScript;
 const scriptUrl = data.scriptUrl || 'https://www.cookieframe.com/api/widget/' + domainId + '/script.js';
 const waitForUpdate = makeNumber(data.waitForUpdate) || 500;
-const enableDebug = data.enableDebug;
+// Enable debug in GTM Preview mode or when explicitly enabled
+const isPreviewMode = copyFromWindow('google_tag_manager_preview') || copyFromWindow('__TAG_ASSISTANT_API');
+const enableDebug = data.enableDebug || isPreviewMode;
 
 // Storage key used by CookieFrame widget
 const STORAGE_KEY = 'cp_consent';
@@ -468,7 +470,18 @@ function readStoredConsent() {
 function applyConsentUpdate(googleConsent) {
   if (googleConsent) {
     debugLog('Updating consent state:', googleConsent);
+
+    // Log the actual values being set
+    debugLog('  ad_storage:', googleConsent.ad_storage);
+    debugLog('  ad_user_data:', googleConsent.ad_user_data);
+    debugLog('  ad_personalization:', googleConsent.ad_personalization);
+    debugLog('  analytics_storage:', googleConsent.analytics_storage);
+    debugLog('  functionality_storage:', googleConsent.functionality_storage);
+    debugLog('  personalization_storage:', googleConsent.personalization_storage);
+
     updateConsentState(googleConsent);
+
+    debugLog('Consent state updated successfully');
   }
 }
 
@@ -511,43 +524,55 @@ function setupConsentListener() {
   // This tells the widget not to call setDefaultGoogleConsentMode()
   setInWindow('__cookieframe_gtm', true, true);
 
-  // Listen for CookieFrame dataLayer events
-  // We use addEventCallback to catch consent updates pushed to dataLayer
+  debugLog('Setting up consent listeners');
+
+  // Store reference for consent checking
+  var lastConsentHash = '';
+
+  // Use addEventCallback to catch GTM-processed events
   addEventCallback(function(containerId, eventData) {
-    // Check if this is a CookieFrame consent update event
-    const eventName = copyFromDataLayer('event');
+    var eventName = copyFromDataLayer('event');
     if (eventName === 'cookieframe_consent_update') {
-      debugLog('Received cookieframe_consent_update event');
-      const cfConsent = copyFromDataLayer('cookieframeConsent');
+      debugLog('addEventCallback received cookieframe_consent_update');
+      var cfConsent = copyFromDataLayer('cookieframeConsent');
+      debugLog('cookieframeConsent from dataLayer:', cfConsent);
       if (cfConsent) {
-        const googleConsent = convertToGoogleConsent(cfConsent);
-        applyConsentUpdate(googleConsent);
+        var googleConsent = convertToGoogleConsent(cfConsent);
+        debugLog('Converted to Google consent:', googleConsent);
+        if (googleConsent) {
+          applyConsentUpdate(googleConsent);
+        }
       }
     }
   });
 
-  // Poll for widget initialization and consent changes
-  // Using callLater for reliable async polling in GTM sandboxed JS
+  // Poll for consent changes via localStorage
+  // This is the most reliable method as it directly reads the stored consent
   var pollCount = 0;
-  var maxPolls = 100; // 10 seconds max (100ms intervals)
-  var lastConsentHash = '';
+  var maxPolls = 300; // 30 seconds max with variable intervals
+  var widgetFound = false;
 
   function pollForConsent() {
     pollCount++;
 
     if (pollCount > maxPolls) {
-      debugLog('Consent polling timeout after ' + (maxPolls * 100) + 'ms');
+      debugLog('Consent polling ended after max attempts');
       return;
     }
 
-    // Try to read consent from localStorage
+    // Try to read consent from localStorage (most reliable source)
     var storedConsent = readStoredConsent();
     if (storedConsent) {
-      // Create a simple hash to detect changes
-      var consentHash = storedConsent.ad_storage + storedConsent.analytics_storage;
+      // Create a comprehensive hash to detect any changes
+      var consentHash = makeString(storedConsent.ad_storage) + '|' +
+                        makeString(storedConsent.analytics_storage) + '|' +
+                        makeString(storedConsent.ad_user_data) + '|' +
+                        makeString(storedConsent.functionality_storage);
 
       if (consentHash !== lastConsentHash) {
-        debugLog('Consent change detected via polling');
+        debugLog('Consent change detected via localStorage polling');
+        debugLog('Previous hash:', lastConsentHash);
+        debugLog('New hash:', consentHash);
         applyConsentUpdate(storedConsent);
         lastConsentHash = consentHash;
       }
@@ -555,30 +580,28 @@ function setupConsentListener() {
 
     // Check if widget is available
     var cfWidget = copyFromWindow('CookieFrame');
-    if (cfWidget) {
-      debugLog('CookieFrame widget detected');
-
-      // Try to get consent from widget API
-      var widgetConsent = callInWindow('CookieFrame.getConsent');
-      if (widgetConsent) {
-        var googleConsent = convertToGoogleConsent(widgetConsent);
-        if (googleConsent) {
-          var widgetHash = googleConsent.ad_storage + googleConsent.analytics_storage;
-          if (widgetHash !== lastConsentHash) {
-            debugLog('Consent from widget API');
-            applyConsentUpdate(googleConsent);
-            lastConsentHash = widgetHash;
-          }
-        }
-      }
+    if (cfWidget && !widgetFound) {
+      widgetFound = true;
+      debugLog('CookieFrame widget detected in window');
     }
 
-    // Continue polling (reduced frequency after initial checks)
-    var nextInterval = pollCount < 20 ? 100 : 500;
+    // Continue polling - faster initially, then slower
+    // First 2 seconds: 100ms intervals (20 polls)
+    // Next 8 seconds: 200ms intervals (40 polls)
+    // After that: 500ms intervals
+    var nextInterval;
+    if (pollCount < 20) {
+      nextInterval = 100;
+    } else if (pollCount < 60) {
+      nextInterval = 200;
+    } else {
+      nextInterval = 500;
+    }
+
     callLater(pollForConsent, nextInterval);
   }
 
-  // Start polling
+  // Start polling immediately
   pollForConsent();
 }
 
