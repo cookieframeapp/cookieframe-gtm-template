@@ -505,12 +505,19 @@ function checkAndApplyStoredConsent() {
  * Set up listener for consent updates from CookieFrame widget
  */
 function setupConsentListener() {
+  const callLater = require('callLater');
+
+  // Mark that GTM template is handling consent mode
+  // This tells the widget not to call setDefaultGoogleConsentMode()
+  setInWindow('__cookieframe_gtm', true, true);
+
   // Listen for CookieFrame dataLayer events
-  // addEventCallback is called after each GTM event finishes processing
+  // We use addEventCallback to catch consent updates pushed to dataLayer
   addEventCallback(function(containerId, eventData) {
     // Check if this is a CookieFrame consent update event
     const eventName = copyFromDataLayer('event');
     if (eventName === 'cookieframe_consent_update') {
+      debugLog('Received cookieframe_consent_update event');
       const cfConsent = copyFromDataLayer('cookieframeConsent');
       if (cfConsent) {
         const googleConsent = convertToGoogleConsent(cfConsent);
@@ -519,36 +526,60 @@ function setupConsentListener() {
     }
   });
 
-  // Also poll for widget initialization (backup method)
-  var checkCount = 0;
-  var maxChecks = 50; // 5 seconds max
+  // Poll for widget initialization and consent changes
+  // Using callLater for reliable async polling in GTM sandboxed JS
+  var pollCount = 0;
+  var maxPolls = 100; // 10 seconds max (100ms intervals)
+  var lastConsentHash = '';
 
-  function checkWidget() {
-    checkCount++;
+  function pollForConsent() {
+    pollCount++;
 
-    if (checkCount > maxChecks) {
-      debugLog('Widget check timeout');
+    if (pollCount > maxPolls) {
+      debugLog('Consent polling timeout after ' + (maxPolls * 100) + 'ms');
       return;
     }
 
+    // Try to read consent from localStorage
+    var storedConsent = readStoredConsent();
+    if (storedConsent) {
+      // Create a simple hash to detect changes
+      var consentHash = storedConsent.ad_storage + storedConsent.analytics_storage;
+
+      if (consentHash !== lastConsentHash) {
+        debugLog('Consent change detected via polling');
+        applyConsentUpdate(storedConsent);
+        lastConsentHash = consentHash;
+      }
+    }
+
+    // Check if widget is available
     var cfWidget = copyFromWindow('CookieFrame');
     if (cfWidget) {
       debugLog('CookieFrame widget detected');
 
-      // Check if consent exists
-      checkAndApplyStoredConsent();
-
-      // Set up event listener on the widget
-      setInWindow('__cookieframe_gtm_listener', true, true);
-
-      return;
+      // Try to get consent from widget API
+      var widgetConsent = callInWindow('CookieFrame.getConsent');
+      if (widgetConsent) {
+        var googleConsent = convertToGoogleConsent(widgetConsent);
+        if (googleConsent) {
+          var widgetHash = googleConsent.ad_storage + googleConsent.analytics_storage;
+          if (widgetHash !== lastConsentHash) {
+            debugLog('Consent from widget API');
+            applyConsentUpdate(googleConsent);
+            lastConsentHash = widgetHash;
+          }
+        }
+      }
     }
 
-    // Check again in 100ms
-    // Note: GTM doesn't have setTimeout, so we rely on dataLayer events
+    // Continue polling (reduced frequency after initial checks)
+    var nextInterval = pollCount < 20 ? 100 : 500;
+    callLater(pollForConsent, nextInterval);
   }
 
-  checkWidget();
+  // Start polling
+  pollForConsent();
 }
 
 /**
@@ -1057,7 +1088,7 @@ ___WEB_PERMISSIONS___
                 "mapValue": [
                   {
                     "type": 1,
-                    "string": "__cookieframe_gtm_listener"
+                    "string": "__cookieframe_gtm"
                   },
                   {
                     "type": 8,
