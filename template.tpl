@@ -361,7 +361,7 @@ const getType = require('getType');
 // Configuration
 const domainId = data.domainId;
 const injectScriptEnabled = data.injectScript;
-const scriptUrl = data.scriptUrl || 'https://cookieframe.com/api/widget/' + domainId + '/script.js';
+const scriptUrl = data.scriptUrl || 'https://www.cookieframe.com/api/widget/' + domainId + '/script.js';
 const waitForUpdate = makeNumber(data.waitForUpdate) || 500;
 const enableDebug = data.enableDebug;
 
