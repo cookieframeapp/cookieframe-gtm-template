@@ -350,12 +350,10 @@ const copyFromWindow = require('copyFromWindow');
 const setInWindow = require('setInWindow');
 const localStorage = require('localStorage');
 const JSON = require('JSON');
-const getTimestampMillis = require('getTimestampMillis');
 const log = require('logToConsole');
 const addEventCallback = require('addEventCallback');
 const copyFromDataLayer = require('copyFromDataLayer');
 const makeNumber = require('makeNumber');
-const makeString = require('makeString');
 const getType = require('getType');
 
 // Configuration
@@ -363,12 +361,10 @@ const domainId = data.domainId;
 const injectScriptEnabled = data.injectScript;
 const scriptUrl = data.scriptUrl || 'https://www.cookieframe.com/api/widget/' + domainId + '/script.js';
 const waitForUpdate = makeNumber(data.waitForUpdate) || 500;
-// Enable debug in GTM Preview mode or when explicitly enabled
-const isPreviewMode = copyFromWindow('google_tag_manager_preview') || copyFromWindow('__TAG_ASSISTANT_API');
-const enableDebug = data.enableDebug || isPreviewMode;
+const enableDebug = data.enableDebug;
 
 // Storage key used by CookieFrame widget
-const STORAGE_KEY = 'cp_consent';
+const STORAGE_KEY = 'cf_consent';
 
 // Developer ID for CookieFrame (registered with Google)
 const DEVELOPER_ID = 'dCookieFrame';
@@ -516,93 +512,34 @@ function checkAndApplyStoredConsent() {
 
 /**
  * Set up listener for consent updates from CookieFrame widget
+ *
+ * Simple approach (like CookieHub): The widget handles all consent updates
+ * by calling gtag('consent', 'update', ...) directly. We just need to
+ * listen for the dataLayer event as a backup.
  */
 function setupConsentListener() {
-  const callLater = require('callLater');
-
   // Mark that GTM template is handling consent mode
   // This tells the widget not to call setDefaultGoogleConsentMode()
   setInWindow('__cookieframe_gtm', true, true);
 
-  debugLog('Setting up consent listeners');
+  debugLog('GTM template initialized - widget will handle consent updates');
 
-  // Store reference for consent checking
-  var lastConsentHash = '';
-
-  // Use addEventCallback to catch GTM-processed events
+  // Listen for consent updates via dataLayer (backup mechanism)
+  // The widget also calls gtag('consent', 'update', ...) directly
   addEventCallback(function(containerId, eventData) {
     var eventName = copyFromDataLayer('event');
     if (eventName === 'cookieframe_consent_update') {
-      debugLog('addEventCallback received cookieframe_consent_update');
+      debugLog('Received cookieframe_consent_update event');
       var cfConsent = copyFromDataLayer('cookieframeConsent');
-      debugLog('cookieframeConsent from dataLayer:', cfConsent);
       if (cfConsent) {
         var googleConsent = convertToGoogleConsent(cfConsent);
-        debugLog('Converted to Google consent:', googleConsent);
         if (googleConsent) {
+          debugLog('Applying consent from dataLayer event:', googleConsent);
           applyConsentUpdate(googleConsent);
         }
       }
     }
   });
-
-  // Poll for consent changes via localStorage
-  // This is the most reliable method as it directly reads the stored consent
-  var pollCount = 0;
-  var maxPolls = 300; // 30 seconds max with variable intervals
-  var widgetFound = false;
-
-  function pollForConsent() {
-    pollCount++;
-
-    if (pollCount > maxPolls) {
-      debugLog('Consent polling ended after max attempts');
-      return;
-    }
-
-    // Try to read consent from localStorage (most reliable source)
-    var storedConsent = readStoredConsent();
-    if (storedConsent) {
-      // Create a comprehensive hash to detect any changes
-      var consentHash = makeString(storedConsent.ad_storage) + '|' +
-                        makeString(storedConsent.analytics_storage) + '|' +
-                        makeString(storedConsent.ad_user_data) + '|' +
-                        makeString(storedConsent.functionality_storage);
-
-      if (consentHash !== lastConsentHash) {
-        debugLog('Consent change detected via localStorage polling');
-        debugLog('Previous hash:', lastConsentHash);
-        debugLog('New hash:', consentHash);
-        applyConsentUpdate(storedConsent);
-        lastConsentHash = consentHash;
-      }
-    }
-
-    // Check if widget is available
-    var cfWidget = copyFromWindow('CookieFrame');
-    if (cfWidget && !widgetFound) {
-      widgetFound = true;
-      debugLog('CookieFrame widget detected in window');
-    }
-
-    // Continue polling - faster initially, then slower
-    // First 2 seconds: 100ms intervals (20 polls)
-    // Next 8 seconds: 200ms intervals (40 polls)
-    // After that: 500ms intervals
-    var nextInterval;
-    if (pollCount < 20) {
-      nextInterval = 100;
-    } else if (pollCount < 60) {
-      nextInterval = 200;
-    } else {
-      nextInterval = 500;
-    }
-
-    callLater(pollForConsent, nextInterval);
-  }
-
-  // Start polling immediately
-  pollForConsent();
 }
 
 /**
@@ -611,7 +548,20 @@ function setupConsentListener() {
 function initializeConsent() {
   debugLog('Initializing CookieFrame consent mode');
 
-  // Set gtag configurations
+  // IMPORTANT: Set default consent state FIRST before anything else
+  // This ensures consent is registered at Consent Initialization event
+  const defaultConsent = buildDefaultConsent();
+  debugLog('Setting default consent:', defaultConsent);
+  setDefaultConsentState(defaultConsent);
+
+  // Set regional defaults immediately after global defaults
+  const regionalConsents = buildRegionalConsents();
+  for (var i = 0; i < regionalConsents.length; i++) {
+    debugLog('Setting regional consent:', regionalConsents[i]);
+    setDefaultConsentState(regionalConsents[i]);
+  }
+
+  // Now set other gtag configurations
   if (data.urlPassthrough) {
     gtagSet('url_passthrough', true);
     debugLog('URL passthrough enabled');
@@ -625,19 +575,7 @@ function initializeConsent() {
   // Set developer ID
   gtagSet('developer_id.' + DEVELOPER_ID, true);
 
-  // Set default consent state
-  const defaultConsent = buildDefaultConsent();
-  debugLog('Setting default consent:', defaultConsent);
-  setDefaultConsentState(defaultConsent);
-
-  // Set regional defaults
-  const regionalConsents = buildRegionalConsents();
-  for (var i = 0; i < regionalConsents.length; i++) {
-    debugLog('Setting regional consent:', regionalConsents[i]);
-    setDefaultConsentState(regionalConsents[i]);
-  }
-
-  // Check for existing stored consent
+  // Check for existing stored consent and apply updates
   checkAndApplyStoredConsent();
 
   // Set up listener for future consent updates
@@ -1206,7 +1144,7 @@ ___WEB_PERMISSIONS___
                 "mapValue": [
                   {
                     "type": 1,
-                    "string": "cp_consent"
+                    "string": "cf_consent"
                   },
                   {
                     "type": 8,
@@ -1362,7 +1300,7 @@ scenarios:
   code: |-
     mock('localStorage', {
       getItem: function(key) {
-        if (key === 'cp_consent') {
+        if (key === 'cf_consent') {
           return '{"necessary":true,"analytics":true,"marketing":false,"preferences":true}';
         }
         return null;
