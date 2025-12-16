@@ -242,10 +242,11 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 // CookieFrame GTM Consent Mode Template
 // https://cookieframe.com
 //
-// SINGLE-TRIGGER APPROACH (like CookieHub/Cookiebot):
-// - Use "Consent Initialization - All Pages" trigger
-// - Sets defaults, reads stored consent, injects widget
-// - Widget handles same-page consent updates via gtag()
+// Uses single-trigger pattern with "Consent Initialization - All Pages":
+// - Sets consent defaults on page load
+// - Reads stored consent for returning visitors
+// - Injects widget script
+// - Handles same-page consent updates via callback
 
 const log = require('logToConsole');
 const injectScript = require('injectScript');
@@ -281,7 +282,7 @@ debug('Initializing CookieFrame consent mode');
 // This tells the widget to skip setDefaultGoogleConsentMode()
 setInWindow('__cookieframe_gtm', true, true);
 
-// Pass configuration to widget (like CookieHub does with cookiehub_gtm)
+// Pass configuration to widget
 const gtmSettings = {
   'enabled': true,
   'consentMode': consentModeEnabled
@@ -333,22 +334,16 @@ if (consentModeEnabled) {
   // Check if consent already exists in localStorage (returning visitor)
   // Must check permission before accessing localStorage in GTM sandboxed JS
   if (queryPermission('access_local_storage', 'read', 'cf_consent')) {
-    debug('Have permission to read cf_consent from localStorage');
-
     const storedConsent = localStorage.getItem('cf_consent');
-    debug('Raw stored consent value:', storedConsent);
 
     if (storedConsent) {
       var consent = JSON.parse(storedConsent);
-      debug('Parsed consent object:', consent);
-      debug('Consent type:', getType(consent));
+      debug('Found stored consent', consent);
 
       if (consent && getType(consent) === 'object') {
         var analytics = consent.analytics === true;
         var marketing = consent.marketing === true;
         var preferences = consent.preferences === true;
-
-        debug('Consent values - analytics:', analytics, 'marketing:', marketing, 'preferences:', preferences);
 
         updateConsentState({
           'ad_storage': marketing ? 'granted' : 'denied',
@@ -359,15 +354,15 @@ if (consentModeEnabled) {
           'personalization_storage': preferences ? 'granted' : 'denied',
           'security_storage': 'granted'
         });
-        debug('Consent state updated from stored consent - all granted!');
+        debug('Consent state updated from stored preferences');
       } else {
-        debug('Consent object is invalid or not an object');
+        debug('Invalid consent object in localStorage');
       }
     } else {
-      debug('No stored consent found in localStorage - waiting for user interaction');
+      debug('No stored consent found, waiting for user interaction');
     }
   } else {
-    debug('No permission to read localStorage - check template permissions');
+    debug('Missing localStorage read permission');
   }
 }
 
@@ -386,10 +381,10 @@ setInWindow('__cookieframe_onConsentChange', function(consentData) {
       'personalization_storage': consentData.preferences ? 'granted' : 'denied',
       'security_storage': 'granted'
     });
-    debug('Consent state updated from widget callback!');
+    debug('Consent state updated from widget');
   }
 }, true);
-debug('Consent change callback registered');
+debug('Widget callback registered');
 
 // Inject widget script if enabled
 if (data.injectScript) {
@@ -1014,12 +1009,10 @@ How it works:
    - Reads localStorage and calls updateConsentState() if consent exists (returning visitors)
    - Injects widget script
 
-2. When user clicks Accept/Reject:
+2. When user interacts with consent banner:
    - Widget saves consent to localStorage
-   - Widget calls gtag('consent', 'update', ...) directly
+   - Widget calls the registered callback to update consent state
    - Tags waiting for consent now fire
-
-This follows the same pattern used by CookieHub and Cookiebot templates.
 
 Consent Type Mapping:
 - necessary → security_storage (always granted)
