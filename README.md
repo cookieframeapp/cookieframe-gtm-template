@@ -49,7 +49,7 @@ Official Google Tag Manager template for [CookieFrame](https://cookieframe.com) 
 
 | Field | Description | Required |
 |-------|-------------|----------|
-| **Domain ID** | Your 8-character CookieFrame domain identifier. Find this in your [CookieFrame dashboard](https://cookieframe.com/app) under Domain Settings. | Yes |
+| **Domain ID** | Your 8-character CookieFrame domain identifier. Find this in your [CookieFrame Dashboard](https://cookieframe.com/app) under Domain Settings. | Yes |
 | **Inject CookieFrame widget script** | Enable to load the widget via this GTM tag. Disable if you're loading the widget directly in your HTML. | No |
 | **Script URL** | Custom script URL (leave empty for default CDN). | No |
 
@@ -177,8 +177,8 @@ Enable debug mode in the tag configuration, then check the browser console for m
 
 ## Support
 
-- **Documentation**: [cookieframe.com/docs](https://cookieframe.com/docs)
-- **Help Center**: [cookieframe.com/help](https://cookieframe.com/help)
+- **Contact**: [cookieframe.com/contact](https://cookieframe.com/contact))
+- **Documentation**: [cookieframe.com/docs](https://cookieframe.com/docs))
 - **Issues**: [GitHub Issues](https://github.com/cookieframeapp/cookieframe-gtm-template/issues)
 
 ## License

@@ -1,7 +1,3 @@
-# AI context files (local only)
-CLAUDE.md
-.claude/
-.cursor/
 .aider*
 
 # OS files
