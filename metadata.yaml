@@ -4,7 +4,7 @@ terms: https://cookieframe.com/terms
 privacy: https://cookieframe.com/privacy
 
 versions:
-  - sha: 58ace0a9b5f9fe1e08cce799435e0df7c83ed78b
+  - sha: 0243c8d421d1a56aebf5be368bd1d6f9cb9c7331
     changeNotes: |
       Initial release
       - Google Consent Mode v2 support with all 7 consent types
