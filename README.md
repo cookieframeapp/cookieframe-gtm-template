@@ -177,8 +177,10 @@ Enable debug mode in the tag configuration, then check the browser console for m
 
 ## Support
 
-- **Contact**: [cookieframe.com/contact](https://cookieframe.com/contact))
-- **Documentation**: [cookieframe.com/docs](https://cookieframe.com/docs))
+- **Contact**: [cookieframe.com/contact](https://cookieframe.com/contact)
+- **Documentation**: [cookieframe.com/docs](https://cookieframe.com/docs)
+- **Terms**: [cookieframe.com/terms](https://cookieframe.com/terms)
+- **Privacy**: [cookieframe.com/privacy](https://cookieframe.com/privacy)
 - **Issues**: [GitHub Issues](https://github.com/cookieframeapp/cookieframe-gtm-template/issues)
 
 ## License

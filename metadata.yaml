@@ -1,5 +1,7 @@
 homepage: https://cookieframe.com
 documentation: https://cookieframe.com/docs/integrations/google-tag-manager
+terms: https://cookieframe.com/terms
+privacy: https://cookieframe.com/privacy
 
 versions:
   - sha: 58ace0a9b5f9fe1e08cce799435e0df7c83ed78b
