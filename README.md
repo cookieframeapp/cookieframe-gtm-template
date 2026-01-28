@@ -1,6 +1,6 @@
-# CookieFrame - Google Tag Manager Template
+# CookieFrame CMP - Google Tag Manager Template
 
-Official Google Tag Manager template for [CookieFrame](https://cookieframe.com) Consent Management Platform with Google Consent Mode v2 support.
+Official Google Tag Manager template for [CookieFrame CMP](https://cookieframe.com) (Consent Management Platform) with Google Consent Mode v2 support.
 
 ## Features
 
@@ -28,7 +28,7 @@ Official Google Tag Manager template for [CookieFrame](https://cookieframe.com) 
 1. In Google Tag Manager, go to **Tags** → **New**
 2. Click **Tag Configuration** → **Discover more tag types in the Community Template Gallery**
 3. Search for **"CookieFrame"**
-4. Select **CookieFrame Consent Management Platform**
+4. Select **CookieFrame CMP**
 5. Click **Add to workspace**
 6. Configure the tag (see Configuration section below)
 7. Set trigger to **Consent Initialization - All Pages**

@@ -1,4 +1,4 @@
-___TERMS_OF_SERVICE___
+﻿___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -13,7 +13,7 @@ ___INFO___
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "CookieFrame Consent Management Platform",
+  "displayName": "CookieFrame CMP",
   "categories": [
     "TAG_MANAGEMENT",
     "UTILITY"
@@ -21,7 +21,7 @@ ___INFO___
   "brand": {
     "id": "github.com_cookieframeapp",
     "displayName": "CookieFrame",
-    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAABpElEQVR4nO2WPUsDQRCGH0VFUbEQC7WwsLGwsLCwsLCwsLCwsLCwsLCwsLCwsLGwsLCwsLCwsLDwB/gDFBQVFRUVFRUVFRUVFfUfZOECbuDOu0tyl4TkLsnlLtztzn7MzO4eKIqiKIqSVTqB28AO4CTwAngEHABnwDXgAugDeoFR4FvYtwN4B6yFfV+AEaAnAvQV9jrFfecvQBcwCFwC48AYcAk0A13AHLCiKFQfGBaGgCNgWZ5fARPAkNy/Btxk7F8EJoBBYBZYBraAcWAMWAKWgPXfFYDAauAG2E5wfyewJe+vyf1j4Ex+24B5YBWYANaBNeBCPjcB08CqMPYLWALmZf81sP8bgA1gQ+4nAA5wCUwB08COfF8HxuT+AjAFrAOjwIbcX5LPSeAGMAjMy/sbwF1gCpgBpoEl+b4BTAJL8v0COCzfLwNjsm8d2E7x2wu0/PBb+nUL/gT/K+AngF1gL4HnHeAS2ANsgFd5/ljuHwIXwF5CnfXAHbAL7AG7wB5wBuwBZ8Au8BXYBa6Bs7TrKAL9AAI6Cq3cTY8xAAAAAElFTkSuQmCC"
+    "thumbnail": "data:image/png;base64,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\u003d\u003d"
   },
   "description": "CookieFrame Consent Management Platform - Google Consent Mode v2 integration. Use with Consent Initialization - All Pages trigger.",
   "containerContexts": [
@@ -51,7 +51,7 @@ ___TEMPLATE_PARAMETERS___
     "checkboxText": "Inject CookieFrame widget script",
     "simpleValueType": true,
     "defaultValue": true,
-    "help": "Automatically inject the CookieFrame consent widget on the page. Disable if you're adding the script manually."
+    "help": "Automatically inject the CookieFrame consent widget on the page. Disable if you\u0027re adding the script manually."
   },
   {
     "type": "TEXT",
@@ -72,8 +72,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "ad_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied"
@@ -84,8 +90,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "ad_user_data",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied"
@@ -96,8 +108,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "ad_personalization",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied"
@@ -108,8 +126,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "analytics_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied"
@@ -120,8 +144,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "functionality_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied"
@@ -132,8 +162,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "personalization_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "denied", "displayValue": "Denied" },
-          { "value": "granted", "displayValue": "Granted" }
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          },
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "denied"
@@ -144,8 +180,14 @@ ___TEMPLATE_PARAMETERS___
         "displayName": "security_storage",
         "macrosInSelect": false,
         "selectItems": [
-          { "value": "granted", "displayValue": "Granted" },
-          { "value": "denied", "displayValue": "Denied" }
+          {
+            "value": "granted",
+            "displayValue": "Granted"
+          },
+          {
+            "value": "denied",
+            "displayValue": "Denied"
+          }
         ],
         "simpleValueType": true,
         "defaultValue": "granted"
@@ -183,8 +225,14 @@ ___TEMPLATE_PARAMETERS___
             "name": "adStorage",
             "type": "SELECT",
             "selectItems": [
-              { "value": "denied", "displayValue": "Denied" },
-              { "value": "granted", "displayValue": "Granted" }
+              {
+                "value": "denied",
+                "displayValue": "Denied"
+              },
+              {
+                "value": "granted",
+                "displayValue": "Granted"
+              }
             ]
           },
           {
@@ -193,8 +241,14 @@ ___TEMPLATE_PARAMETERS___
             "name": "analyticsStorage",
             "type": "SELECT",
             "selectItems": [
-              { "value": "denied", "displayValue": "Denied" },
-              { "value": "granted", "displayValue": "Granted" }
+              {
+                "value": "denied",
+                "displayValue": "Denied"
+              },
+              {
+                "value": "granted",
+                "displayValue": "Granted"
+              }
             ]
           }
         ],
@@ -1019,4 +1073,5 @@ Consent Type Mapping:
 - analytics → analytics_storage
 - marketing → ad_storage, ad_user_data, ad_personalization
 - preferences → functionality_storage, personalization_storage
+
 
