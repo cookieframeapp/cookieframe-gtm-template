@@ -4,6 +4,8 @@ terms: https://cookieframe.com/terms
 privacy: https://cookieframe.com/privacy
 
 versions:
+  - sha: 6b342159908c81be558be15b8b525100e6a69b35
+    changeNotes: Rename template to CookieFrame CMP and update thumbnail.
   - sha: 0243c8d421d1a56aebf5be368bd1d6f9cb9c7331
     changeNotes: |
       Initial release
