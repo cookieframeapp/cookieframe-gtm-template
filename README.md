@@ -116,20 +116,6 @@ If you enable "Inject CookieFrame widget script", the template will:
 2. Automatically detect consent changes
 3. Update Google Consent Mode accordingly
 
-### Manual Widget Installation
-
-If you prefer to install the widget directly in your HTML:
-
-```html
-<script
-  src="https://cookieframe.com/api/widget/YOUR_DOMAIN_ID/script.js"
-  data-domain-id="YOUR_DOMAIN_ID"
-  async>
-</script>
-```
-
-The GTM template will still detect consent changes from the widget.
-
 ## Verifying the Integration
 
 ### Using GTM Preview Mode
