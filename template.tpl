@@ -296,6 +296,30 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 // CookieFrame GTM Consent Mode Template
 // https://cookieframe.com
 //
+// =============================================================================
+// TWO-TIER CONSENT ARCHITECTURE
+// =============================================================================
+//
+// CookieFrame uses a two-tier approach for comprehensive consent management:
+//
+// TIER 1: GTM Consent Mode (this template)
+// - Controls tags INSIDE the GTM container (GA4, Google Ads, Floodlight, etc.)
+// - Uses Google's Consent Mode APIs (setDefaultConsentState, updateConsentState)
+// - Tags wait for consent before firing based on their consent requirements
+//
+// TIER 2: Script Blocker (CookieFrame widget)
+// - Controls scripts OUTSIDE GTM (direct HTML embeds like Facebook Pixel, Hotjar)
+// - Uses MutationObserver + createElement override to block scripts
+// - Scripts with type="text/plain" or matching patterns are blocked until consent
+//
+// BOTH systems work together:
+// - GTM container loads normally (never blocked)
+// - GA4/Google Ads wait for consent via Consent Mode
+// - Facebook Pixel (direct embed) blocked by widget until consent
+// - Full GDPR/CCPA compliance for all tracking scripts
+//
+// =============================================================================
+//
 // Uses single-trigger pattern with "Consent Initialization - All Pages":
 // - Sets consent defaults on page load
 // - Reads stored consent for returning visitors
