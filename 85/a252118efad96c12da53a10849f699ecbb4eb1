@@ -1,0 +1,19 @@
+template.tpl
+  s_b18dde7f591f76::t_736b43d5f6535a 469
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "85a252118efad96c12da53a10849f699ecbb4eb1",
+  "prompts": {},
+  "sessions": {
+    "s_b18dde7f591f76": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "895cfb96-3db6-4b17-ba9d-9f6c1b4f81b3",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Tudor <tudor@baidoc.de>"
+    }
+  }
+}
