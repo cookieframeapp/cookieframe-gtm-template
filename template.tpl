@@ -466,7 +466,7 @@ debug('Widget callback registered');
 
 // Inject widget script if enabled
 if (data.injectScript) {
-  var scriptUrl = data.scriptUrl || 'https://www.cookieframe.com/api/widget/' + domainId + '/script.js';
+  var scriptUrl = data.scriptUrl || 'https://cookieframe.com/api/widget/' + domainId + '/script.js';
   debug('Injecting widget script', scriptUrl);
 
   if (queryPermission('inject_script', scriptUrl)) {
